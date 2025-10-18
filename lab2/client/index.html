@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 2</title>
+  <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: #1f2023;
+          min-height: 100vh;
+          padding: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .container {
+          background: #2b2d30;
+          border-radius: 20px;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+          padding: 40px;
+          max-width: 800px;
+          width: 100%;
+      }
+
+      h1 {
+          color: #c9d1d9;
+          text-align: center;
+          margin-bottom: 30px;
+          font-size: 2em;
+      }
+
+      .form-group {
+          margin-bottom: 25px;
+      }
+
+      label {
+          display: block;
+          color: #c9d1d9;
+          font-weight: 600;
+          margin-bottom: 8px;
+          font-size: 1.1em;
+      }
+
+      input, textarea {
+          width: 100%;
+          padding: 12px;
+          background: #1f2023;
+          border: 2px solid #3d3f42;
+          border-radius: 8px;
+          font-size: 16px;
+          color: #c9d1d9;
+          transition: border-color 0.3s;
+          font-family: inherit;
+      }
+
+      input:focus, textarea:focus {
+          outline: none;
+          border-color: #CC342D;
+      }
+
+      textarea {
+          resize: vertical;
+          min-height: 100px;
+      }
+
+      .button-group {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 25px;
+      }
+
+      button {
+          flex: 1;
+          padding: 15px;
+          border: none;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+      }
+
+      .encrypt-btn, .decrypt-btn {
+          background: #8B1A10;
+          color: #c9d1d9;
+      }
+
+      .encrypt-btn:hover, .decrypt-btn:hover {
+          background: #6f150d;
+      }
+
+      button:active {
+          transform: translateY(0);
+      }
+
+      .output {
+          background: #1f2023;
+          border: 2px solid #3d3f42;
+          border-radius: 8px;
+          padding: 20px;
+          min-height: 100px;
+          word-wrap: break-word;
+          font-size: 16px;
+          line-height: 1.6;
+          color: #c9d1d9;
+      }
+
+      .output-label {
+          color: #c9d1d9;
+          font-weight: 600;
+          margin-bottom: 10px;
+          font-size: 1.1em;
+      }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Playfair Cipher</h1>
+
+  <div class="form-group">
+    <label for="key">Key:</label>
+    <input type="text" id="key" placeholder="Enter key">
+  </div>
+
+  <div class="form-group">
+    <label for="text">Text:</label>
+    <textarea id="text" placeholder="Enter text or cipher"></textarea>
+  </div>
+
+  <div class="button-group">
+    <button class="encrypt-btn" onclick="encrypt()">Encrypt</button>
+    <button class="decrypt-btn" onclick="decrypt()">Decrypt</button>
+  </div>
+
+  <div class="form-group">
+    <div class="output-label">Result:</div>
+    <div id="output" class="output">Result will be here</div>
+  </div>
+</div>
+
+<script>
+  async function encrypt() {
+    const key = document.getElementById('key').value;
+    const text = document.getElementById('text').value;
+    const output = document.getElementById('output');
+
+    if (!key || !text) {
+      output.textContent = 'key and text required';
+      output.className = 'output error';
+      return;
+    }
+
+    try {
+      const response = await fetch('/encrypt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ key, text })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        output.textContent = data.error;
+        output.className = 'output error';
+      } else {
+        output.textContent = data.result;
+        output.className = 'output success';
+      }
+    } catch (error) {
+      output.textContent = 'server error ' + error.message;
+      output.className = 'output error';
+    }
+  }
+
+  async function decrypt() {
+    const key = document.getElementById('key').value;
+    const ciphertext = document.getElementById('text').value;
+    const output = document.getElementById('output');
+
+    if (!key || !ciphertext) {
+      output.textContent = 'key and text required';
+      output.className = 'output error';
+      return;
+    }
+
+    try {
+      const response = await fetch('/decrypt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ key, ciphertext })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        output.textContent = data.error;
+        output.className = 'output error';
+      } else {
+        output.textContent = data.result;
+        output.className = 'output success';
+      }
+    } catch (error) {
+      output.textContent = 'server error ' + error.message;
+      output.className = 'output error';
+    }
+  }
+</script>
+</body>
+</html>

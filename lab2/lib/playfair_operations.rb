@@ -7,6 +7,7 @@ class PlayfairOperations
 
   def encrypt(key, text)
     return "Invalid characters in key or text" unless valid_input?(key, text)
+    return "Key must be 7+ letters" unless key.length >= 7
 
     matrix = build_matrix(key)
     digraphs = prepare_text(text)
@@ -30,6 +31,7 @@ class PlayfairOperations
 
   def decrypt(key, ciphertext)
     return "Invalid characters in key or ciphertext" unless valid_input?(key, ciphertext)
+    return "Key must be 7+ letters" unless key.length >= 7
 
     matrix = build_matrix(key)
     digraphs = prepare_text(ciphertext)
