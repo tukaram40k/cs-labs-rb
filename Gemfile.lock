@@ -1,0 +1,17 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    fiddle (1.1.8)
+    libui (0.1.2)
+    libui (0.1.2-arm64-darwin)
+
+PLATFORMS
+  arm64-darwin-24
+  ruby
+
+DEPENDENCIES
+  fiddle (~> 1.1)
+  libui (~> 0.1.2)
+
+BUNDLED WITH
+   2.6.9
