@@ -1,4 +1,5 @@
 require 'libui'
+require_relative 'playfair_operations'
 
 class UserInterface
   UI = LibUI
@@ -42,8 +43,17 @@ class UserInterface
       text = UI.multiline_entry_text(text_input).to_s
 
       # logic goes here
+      playfair = PlayfairOperations.new
 
-      output = "Mode: #{mode}, Key: #{key}, Input: #{text}"
+      case mode
+      when 'Encrypt'
+        output = playfair.encrypt(key, text)
+      when 'Decrypt'
+        output = playfair.decrypt(key, text)
+      else
+        output = 'Invalid operation mode'
+      end
+
       UI.multiline_entry_set_text(output_area, output)
       0
     end
