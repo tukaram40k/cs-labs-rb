@@ -6,7 +6,8 @@ class PlayfairOperations
   end
 
   def encrypt(key, text)
-    return "Invalid characters in key or text" unless valid_input?(key, text)
+    text = text.gsub(/\s+/, "")
+    return "Invalid characters in key or text. Must be A-Z or a-z." unless valid_input?(key, text)
     return "Key must be 7+ letters" unless key.length >= 7
 
     matrix = build_matrix(key)
@@ -30,7 +31,8 @@ class PlayfairOperations
   end
 
   def decrypt(key, ciphertext)
-    return "Invalid characters in key or ciphertext" unless valid_input?(key, ciphertext)
+    ciphertext = ciphertext.gsub(/\s+/, "")
+    return "Invalid characters in key or text. Must be A-Z or a-z." unless valid_input?(key, ciphertext)
     return "Key must be 7+ letters" unless key.length >= 7
 
     matrix = build_matrix(key)
