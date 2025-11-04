@@ -1,6 +1,20 @@
 require_relative 's_boxes'
 
 class SBox
+  attr_accessor :random
+
+  def initialize
+    @random = false
+  end
+
+  def set_random
+    @random = true
+  end
+
+  def rand_48bit
+    rand(2**48).to_s(2).rjust(48, '0')
+  end
+
   def print_table(table, index)
     puts "used table S#{index}:"
     table.each_with_index do |row, i|
@@ -9,6 +23,8 @@ class SBox
   end
 
   def sbox_sub(input_bits)
+    input_bits = rand_48bit if @random
+
     unless input_bits.is_a?(String) && input_bits =~ /\A[01]{48}\z/
       raise ArgumentError, "input must be a 48-bit binary string"
     end
