@@ -52,7 +52,6 @@ func main() {
 	// choose public key e
 	fmt.Println("public key e = 65537")
 	e := big.NewInt(65537)
-	//fmt.Println("e:", e)
 	fmt.Println()
 
 	// d = e^{-1} mod phi
@@ -70,7 +69,7 @@ func main() {
 	fmt.Println("c = ", c)
 
 	// m' = c^d mod n
-	fmt.Println("m' = c^d mod n")
+	fmt.Println("\nm' = c^d mod n")
 	mPrime := new(big.Int).Exp(c, d, n)
 	fmt.Println("m' = ", mPrime)
 
