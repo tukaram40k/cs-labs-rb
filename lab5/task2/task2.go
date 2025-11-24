@@ -33,11 +33,8 @@ func main() {
 	fmt.Println("g =", g)
 	fmt.Println()
 
-	// private key x in [1, p-2]
-	x, err := rand.Int(rand.Reader, new(big.Int).Sub(p, big.NewInt(2)))
-	if err != nil {
-		log.Fatal(err)
-	}
+	// private key x in [2, p-2]
+	x, _ := rand.Int(rand.Reader, new(big.Int).Sub(p, big.NewInt(2)))
 	x.Add(x, big.NewInt(1))
 
 	// public key y = g^x mod p
@@ -47,11 +44,8 @@ func main() {
 	fmt.Println("\npublic key y =", y)
 	fmt.Println()
 
-	// choose key k
-	k, err := rand.Int(rand.Reader, new(big.Int).Sub(p, big.NewInt(2)))
-	if err != nil {
-		log.Fatal(err)
-	}
+	// choose key k in [2, p-2]
+	k, _ := rand.Int(rand.Reader, new(big.Int).Sub(p, big.NewInt(2)))
 	k.Add(k, big.NewInt(1))
 
 	// c1 = g^k mod p
