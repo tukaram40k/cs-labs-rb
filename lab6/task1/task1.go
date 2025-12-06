@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"log"
 	"math/big"
 )
 
@@ -36,9 +35,6 @@ func main() {
 
 	// compute private key d
 	d := new(big.Int).ModInverse(e, phi)
-	if d == nil {
-		log.Fatalf("no modular inverse for e modulo phi")
-	}
 
 	// signature s = h^d mod n
 	s := new(big.Int).Exp(hInt, d, n)
